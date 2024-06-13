@@ -8,6 +8,7 @@ class FileOrganizerGUI:
     def __init__(self, root):
         self.root = root
         self.root.title("File Organizer")
+        self.root.configure(bg="#f0f0f0")  # Set background color of the main window
         self.directory = tk.StringVar()
         self.directory.set(str(Path.home() / 'Downloads'))
         self.rules = {
@@ -24,16 +25,20 @@ class FileOrganizerGUI:
 
     def create_widgets(self):
         # Directory selection
-        tk.Label(self.root, text="Directory to organize:").grid(row=0, column=0, padx=10, pady=10)
-        tk.Entry(self.root, textvariable=self.directory, width=50).grid(row=0, column=1, padx=10, pady=10)
-        tk.Button(self.root, text="Browse", command=self.browse_directory).grid(row=0, column=2, padx=10, pady=10)
+        tk.Label(self.root, text="Directory to organize:", bg="#f0f0f0", fg="#333").grid(row=0, column=0, padx=10, pady=10, sticky='w')
+        tk.Entry(self.root, textvariable=self.directory, width=50, bg="#ffffff", fg="#333").grid(row=0, column=1, padx=10, pady=10)
+        tk.Button(self.root, text="Browse", command=self.browse_directory, bg="#4CAF50", fg="#fff").grid(row=0, column=2, padx=10, pady=10)
 
-        # Action buttons
-        tk.Button(self.root, text="Organize Files", command=self.organize).grid(row=1, column=0, padx=10, pady=10)
-        tk.Button(self.root, text="Undo Last Action", command=self.undo).grid(row=1, column=1, padx=10, pady=10)
-        tk.Button(self.root, text="Add Rule", command=self.add_rule).grid(row=1, column=2, padx=10, pady=10)
-        tk.Button(self.root, text="View Rules", command=self.view_rules).grid(row=1, column=3, padx=10, pady=10)
-        tk.Button(self.root, text="Exit", command=self.root.quit).grid(row=1, column=4, padx=10, pady=10)
+        # Create a frame for action buttons
+        button_frame = tk.Frame(self.root, bg="#f0f0f0")
+        button_frame.grid(row=1, column=0, columnspan=3, pady=10)
+
+        # Action buttons with colors
+        tk.Button(button_frame, text="Organize Files", command=self.organize, bg="#2196F3", fg="#fff").grid(row=0, column=0, padx=5, pady=2)
+        tk.Button(button_frame, text="Undo Last Action", command=self.undo, bg="#FF5722", fg="#fff").grid(row=0, column=1, padx=5, pady=2)
+        tk.Button(button_frame, text="Add Rule", command=self.add_rule, bg="#FFEB3B", fg="#333").grid(row=0, column=2, padx=5, pady=2)
+        tk.Button(button_frame, text="View Rules", command=self.view_rules, bg="#9C27B0", fg="#fff").grid(row=0, column=3, padx=5, pady=2)
+        tk.Button(button_frame, text="Exit", command=self.root.quit, bg="#f44336", fg="#fff").grid(row=0, column=4, padx=5, pady=2)
 
     def browse_directory(self):
         directory = filedialog.askdirectory()
@@ -72,13 +77,14 @@ class FileOrganizerGUI:
     def add_rule(self):
         rule_window = tk.Toplevel(self.root)
         rule_window.title("Add Rule")
+        rule_window.configure(bg="#f0f0f0")
         
-        tk.Label(rule_window, text="Folder Name:").grid(row=0, column=0, padx=10, pady=10)
-        folder_name_entry = tk.Entry(rule_window)
+        tk.Label(rule_window, text="Folder Name:", bg="#f0f0f0", fg="#333").grid(row=0, column=0, padx=10, pady=10)
+        folder_name_entry = tk.Entry(rule_window, bg="#ffffff", fg="#333")
         folder_name_entry.grid(row=0, column=1, padx=10, pady=10)
         
-        tk.Label(rule_window, text="File Extensions (comma separated):").grid(row=1, column=0, padx=10, pady=10)
-        extensions_entry = tk.Entry(rule_window)
+        tk.Label(rule_window, text="File Extensions (comma separated):", bg="#f0f0f0", fg="#333").grid(row=1, column=0, padx=10, pady=10)
+        extensions_entry = tk.Entry(rule_window, bg="#ffffff", fg="#333")
         extensions_entry.grid(row=1, column=1, padx=10, pady=10)
         
         def add_rule_action():
@@ -87,7 +93,7 @@ class FileOrganizerGUI:
             self.add_rule_to_dict(folder_name, extensions)
             rule_window.destroy()
         
-        tk.Button(rule_window, text="Add Rule", command=add_rule_action).grid(row=2, column=0, columnspan=2, padx=10, pady=10)
+        tk.Button(rule_window, text="Add Rule", command=add_rule_action, bg="#4CAF50", fg="#fff").grid(row=2, column=0, columnspan=2, padx=10, pady=10)
 
     def add_rule_to_dict(self, folder_name, extensions):
         if folder_name in self.rules:
@@ -98,9 +104,10 @@ class FileOrganizerGUI:
     def view_rules(self):
         rules_window = tk.Toplevel(self.root)
         rules_window.title("View Rules")
+        rules_window.configure(bg="#f0f0f0")
         
         for idx, (folder, extensions) in enumerate(self.rules.items(), start=1):
-            rule_label = tk.Label(rules_window, text=f"{idx}. {folder}: {', '.join(extensions)}")
+            rule_label = tk.Label(rules_window, text=f"{idx}. {folder}: {', '.join(extensions)}", bg="#f0f0f0", fg="#333")
             rule_label.pack(padx=10, pady=5)
 
 def main():
